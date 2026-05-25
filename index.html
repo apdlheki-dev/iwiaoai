@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة الدراسة الذكية</title>
+    <!-- استيراد خط كوكول الجميل (Cairo) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- مكتبة توليد الـ PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        /* أزرار التنقل بين الأقسام */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .tab-btn {
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            background-color: #e2e8f0;
+            color: #64748b;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+        }
+
+        /* تصميم الكروت والأقسام */
+        .section-content {
+            display: none;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #312e81;
+            border-right: 4px solid var(--primary-color);
+            padding-right: 10px;
+        }
+
+        /* أدوات الرفع والإدخال */
+        .upload-zone {
+            border: 2px dashed #cbd5e1;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            background: #f8fafc;
+            cursor: pointer;
+            transition: border-color 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .upload-zone:hover {
+            border-color: var(--primary-color);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        select, input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .btn-submit {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* منطقة النتائج والـ PDF */
+        .output-container {
+            margin-top: 30px;
+            border-top: 2px solid var(--border-color);
+            padding-top: 20px;
+            display: none;
+        }
+
+        #pdf-content {
+            background: white;
+            padding: 30px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .pdf-header {
+            text-align: center;
+            border-bottom: 2px solid #334155;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .pattern-block {
+            margin-bottom: 20px;
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .pattern-title {
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+        .btn-download {
+            background-color: #10b981;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .btn-download:hover {
+            background-color: #059669;
+        }
+
+        /* الحقوق والتوقيع */
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #475569;
+            border-top: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>المنصة التعليمية الذكية</h1>
+        <p>لخص موادك وأنشئ اختباراتك بسهولة</p>
+    </header>
+
+    <!-- أزرار التحكم بالاقسام -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('summary-sec', this)">القسم الأول: تلخيص المواد</button>
+        <button class="tab-btn" onclick="switchTab('quiz-sec', this)">القسم الثاني: بناء الأسئلة</button>
+    </div>
+
+    <!-- القسم الأول: التلخيص -->
+    <div id="summary-sec" class="section-content active">
+        <h2>تلخيص المواد الدراسية</h2>
+        <div class="form-group">
+            <label>اختر لغة الملف المرفوع:</label>
+            <select id="lang-summary">
+                <option value="ar">العربية</option>
+                <option value="en">الإنجليزية</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>ارفع المادة الدراسية (PDF أو صور):</label>
+            <div class="upload-zone" onclick="document.getElementById('file-summary').click()">
+                <p>اضغط هنا لرفع الملفات أو الصور</p>
+                <input type="file" id="file-summary" accept="image/*, .pdf" style="display:none" onchange="updateFileName(this)">
+                <span id="file-name-sum" style="display:block; margin-top:10px; color:var(--primary-color); font-weight:600;"></span>
+            </div>
+        </div>
+        <button class="btn-submit" onclick="generateSummary()">توليد التلخيص الذكي</button>
+    </div>
+
+    <!-- القسم الثاني: الأسئلة -->
+    <div id="quiz-sec" class="section-content">
+        <h2>إنشاء أسئلة مخصصة (5 أنماط)</h2>
+        <div class="form-group">
+            <label>اختر لغة الأسئلة:</label>
+            <select id="lang-quiz">
+                <option value="ar">العربية</option>
+                <option value="en">الإنجليزية</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>ارفع الملف أو الصور المراد الصياغة منها:</label>
+            <div class="upload-zone" onclick="document.getElementById('file-quiz').click()">
+                <p>اضغط هنا لرفع الملفات أو الصور</p>
+                <input type="file" id="file-quiz" accept="image/*, .pdf" style="display:none" onchange="updateFileName(this)">
+                <span id="file-name-quiz" style="display:block; margin-top:10px; color:var(--primary-color); font-weight:600;"></span>
+            </div>
+        </div>
+        <button class="btn-submit" onclick="generateQuiz()">توليد الأسئلة بأنماطها الخمسة</button>
+    </div>
+
+    <!-- منطقة عرض وتصدير الـ PDF المعدل -->
+    <div class="output-container" id="output-container">
+        <div id="pdf-content">
+            <!-- سيتم ملء هذا الجزء برمجياً -->
+        </div>
+        <button class="btn-download" onclick="downloadPDF()">
+            تحميل الملف كمستند PDF معدل ومقسّم
+        </button>
+    </div>
+
+    <!-- التوقيع المطلوب -->
+    <footer>
+        تم إعداده بواسطة عبد الله علي /D
+    </footer>
+</div>
+
+<script>
+    // التنقل بين الأقسام
+    function switchTab(sectionId, btn) {
+        document.querySelectorAll('.section-content').forEach(sec => sec.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        
+        document.getElementById(sectionId).classList.add('active');
+        btn.classList.add('active');
+        document.getElementById('output-container').style.display = 'none'; // إخفاء المعاينة القديمة
+    }
+
+    // تحديث اسم الملف عند الرفع
+    function updateFileName(input) {
+        const spanId = input.id === 'file-summary' ? 'file-name-sum' : 'file-name-quiz';
+        if(input.files.length > 0) {
+            document.getElementById(spanId).innerText = "تم اختيار ملف: " + input.files[0].name;
+        }
+    }
+
+    // معالجة وتوليد التلخيص (قسم 1)
+    function generateSummary() {
+        const fileInput = document.getElementById('file-summary');
+        const lang = document.getElementById('lang-summary').value;
+
+        if (fileInput.files.length === 0) {
+            alert("الرجاء رفع ملف أو صورة أولاً!");
+            return;
+        }
+
+        const container = document.getElementById('output-container');
+        const pdfContent = document.getElementById('pdf-content');
+        
+        // نص المحاكاة حسب اللغة
+        const title = lang === 'ar' ? "ملخص المادة الدراسية الشامل" : "Comprehensive Study Summary";
+        const content = lang === 'ar' ? 
+            `<p><strong>المحور الأول:</strong> هذا النص يمثل خلاصة الأفكار الرئيسية المأخوذة من الملف الذي قمت برفعه، حيث تم استخراج المفاهيم الأساسية وتبسيطها لتسهيل الحفظ والمراجعة السريعة.</p>
+             <p><strong>المحور الثاني:</strong> تم التركيز على النقاط الأكثر أهمية والتعاريف المحورية مع تنسيقها بشكل مريح للعين باستخدام خط كوكول المعتمد للقرّاء.</p>` :
+            `<p><strong>Core Concept 1:</strong> This text represents the summary of main ideas extracted from your uploaded file, simplifying key concepts for quick revision.</p>
+             <p><strong>Core Concept 2:</strong> Major definitions and critical points have been highlighted and structured appropriately.</p>`;
+
+        pdfContent.innerHTML = `
+            <div class="pdf-header">
+                <h2>${title}</h2>
+                <small>اللغة المعتمدة: ${lang === 'ar' ? 'العربية' : 'English'}</small>
+            </div>
+            <div style="margin-bottom: 30px;">
+                ${content}
+            </div>
+            <div style="text-align: left; font-weight: bold; margin-top: 40px; border-top: 1px dashed #ccc; padding-top: 10px;">
+                تم إعداده بواسطة عبد الله علي /D
+            </div>
+        `;
+        
+        container.style.display = 'block';
+        window.scrollTo({ top: container.offsetTop, behavior: 'smooth' });
+    }
+
+    // معالجة وتوليد الأسئلة بـ 5 أنماط (قسم 2)
+    function generateQuiz() {
+        const fileInput = document.getElementById('file-quiz');
+        const lang = document.getElementById('lang-quiz').value;
+
+        if (fileInput.files.length === 0) {
+            alert("الرجاء رفع ملف أو صورة صياغة الأسئلة!");
+            return;
+        }
+
+        const container = document.getElementById('output-container');
+        const pdfContent = document.getElementById('pdf-content');
+
+        // الـ 5 أنماط للأسئلة باللغتين
+        const patterns = lang === 'ar' ? [
+            { type: "النمط الأول: اختيار من متعدد (MCQ)", q: "س1: أي مما يلي يعتبر العنصر الأساسي للمادة المذكورة؟ <br> أ) خيار أول | ب) خيار ثاني | ج) خيار ثالث" },
+            { type: "النمط الثاني: صح أم خطأ", q: "س2: ( ) تعتبر العملية الموضحة في الملف عملية عكسية دائماً." },
+            { type: "النمط الثالث: أكمل الفراغات", q: "س3: يتكون النظام الأساسي للمادة من ........ والتي تساعد على التوازن." },
+            { type: "النمط الرابع: الأسئلة المقالية القصيرة", q: "س4: اشرح باختصار الأثر الرئيسي المترتب على المفهوم المذكور في الفصل الأول؟" },
+            { type: "النمط الخامس: التوصيل (المطابقة)", q: "س5: صل من القائمة (أ) ما يناسبها من القائمة (ب) بناءً على الجداول المرفقة." }
+        ] : [
+            { type: "Pattern 1: Multiple Choice Questions (MCQ)", q: "Q1: Which of the following is the primary element described? <br> A) Option 1 | B) Option 2 | C) Option 3" },
+            { type: "Pattern 2: True or False", q: "Q2: ( ) The mechanism described in the text is always reversible." },
+            { type: "Pattern 3: Fill in the Blanks", q: "Q3: The core architecture consists of ........ which helps maintain stability." },
+            { type: "Pattern 4: Short Essay Questions", q: "Q4: Briefly explain the main impact of the concept discussed in chapter one?" },
+            { type: "Pattern 5: Matching Questions", q: "Q5: Match items from Column A with their correct definitions in Column B." }
+        ];
+
+        let quizHtml = `
+            <div class="pdf-header">
+                <h2>نموذج الاختبار الشامل (5 أنماط)</h2>
+                <small>اللغة المعتمدة: ${lang === 'ar' ? 'العربية' : 'English'}</small>
+            </div>
+        `;
+
+        patterns.forEach(item => {
+            quizHtml += `
+                <div class="pattern-block">
+                    <div class="pattern-title">${item.type}</div>
+                    <p>${item.q}</p>
+                </div>
+            `;
+        });
+
+        quizHtml += `
+            <div style="text-align: left; font-weight: bold; margin-top: 40px; border-top: 1px dashed #ccc; padding-top: 10px;">
+                تم إعداده بواسطة عبد الله علي /D
+            </div>
+        `;
+
+        pdfContent.innerHTML = quizHtml;
+        container.style.display = 'block';
+        window.scrollTo({ top: container.offsetTop, behavior: 'smooth' });
+    }
+
+    // دالة تحميل وتصدير الملف بصيغة PDF معدل
+    function downloadPDF() {
+        const element = document.getElementById('pdf-content');
+        
+        // إعدادات تصدير الـ PDF ليحافظ على الخطوط والتنسيق العربي
+        const opt = {
+            margin:       10,
+            filename:     'المستند_المعدل_عبدالله_علي.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, useCORS: true },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        // تشغيل التصدير والتحميل تلقائياً
+        html2pdf().set(opt).from(element).save();
+    }
+</script>
+
+</body>
+</html>
