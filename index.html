@@ -3,13 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة الدراسة الذكية</title>
-    <!-- استيراد خط كوكول الجميل (Cairo) -->
+    <title>منصة تنسيق المواد والاختبارات</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
     
-    <!-- مكتبة توليد الـ PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
@@ -37,26 +35,23 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 900px;
             margin: 0 auto;
         }
 
         header {
             text-align: center;
             margin-bottom: 40px;
-            padding: 20px;
+            padding: 25px;
             background: linear-gradient(135deg, #4f46e5, #7c3aed);
             color: white;
             border-radius: 15px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
-        header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
+        header h1 { font-size: 2.2rem; margin-bottom: 10px; }
 
-        /* أزرار التنقل بين الأقسام */
+        /* التنقل بين الأقسام */
         .tabs {
             display: flex;
             justify-content: center;
@@ -65,8 +60,8 @@
         }
 
         .tab-btn {
-            padding: 12px 30px;
-            font-size: 1.1rem;
+            padding: 12px 25px;
+            font-size: 1rem;
             font-weight: 600;
             border: none;
             background-color: #e2e8f0;
@@ -82,7 +77,6 @@
             box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
         }
 
-        /* تصميم الكروت والأقسام */
         .section-content {
             display: none;
             background: var(--card-bg);
@@ -90,58 +84,38 @@
             border-radius: 15px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
             margin-bottom: 30px;
-            animation: fadeIn 0.5s ease;
         }
 
-        .section-content.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .section-content.active { display: block; }
 
         h2 {
             margin-bottom: 20px;
             color: #312e81;
             border-right: 4px solid var(--primary-color);
             padding-right: 10px;
+            font-size: 1.4rem;
         }
 
-        /* أدوات الرفع والإدخال */
-        .upload-zone {
-            border: 2px dashed #cbd5e1;
-            padding: 30px;
-            text-align: center;
-            border-radius: 10px;
-            background: #f8fafc;
-            cursor: pointer;
-            transition: border-color 0.3s;
-            margin-bottom: 20px;
-        }
-
-        .upload-zone:hover {
-            border-color: var(--primary-color);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        select, input[type="file"] {
+        .form-group { margin-bottom: 25px; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; color: #475569; }
+        
+        input[type="text"], textarea, select {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             border: 1px solid var(--border-color);
             border-radius: 8px;
             font-size: 1rem;
             outline: none;
+            resize: vertical;
+        }
+
+        .input-file-wrapper {
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px dashed #cbd5e1;
+            text-align: center;
+            margin-bottom: 15px;
         }
 
         .btn-submit {
@@ -150,74 +124,59 @@
             padding: 12px 25px;
             border: none;
             border-radius: 8px;
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
             width: 100%;
             transition: background 0.3s;
         }
 
-        .btn-submit:hover {
-            background-color: var(--primary-hover);
-        }
+        .btn-submit:hover { background-color: var(--primary-hover); }
 
-        /* منطقة النتائج والـ PDF */
-        .output-container {
-            margin-top: 30px;
-            border-top: 2px solid var(--border-color);
-            padding-top: 20px;
-            display: none;
-        }
-
+        /* منطقة المعاينة والـ PDF */
+        .output-container { margin-top: 30px; display: none; }
+        
         #pdf-content {
             background: white;
-            padding: 30px;
+            padding: 40px;
             border: 1px solid #e2e8f0;
             border-radius: 8px;
             margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
 
         .pdf-header {
             text-align: center;
-            border-bottom: 2px solid #334155;
+            border-bottom: 2px solid #1e293b;
             padding-bottom: 15px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .pattern-block {
             margin-bottom: 20px;
-            background: #f1f5f9;
+            background: #f8fafc;
             padding: 15px;
             border-radius: 8px;
+            border-right: 4px solid var(--primary-color);
         }
 
-        .pattern-title {
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 8px;
-        }
+        .pattern-title { font-weight: 700; color: #1e293b; margin-bottom: 5px; }
 
         .btn-download {
             background-color: #10b981;
             color: white;
-            padding: 12px 25px;
+            padding: 14px 25px;
             border: none;
             border-radius: 8px;
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
             width: 100%;
+            transition: background 0.3s;
         }
 
-        .btn-download:hover {
-            background-color: #059669;
-        }
+        .btn-download:hover { background-color: #059669; }
 
-        /* الحقوق والتوقيع */
         footer {
             text-align: center;
             margin-top: 50px;
@@ -233,200 +192,238 @@
 
 <div class="container">
     <header>
-        <h1>المنصة التعليمية الذكية</h1>
-        <p>لخص موادك وأنشئ اختباراتك بسهولة</p>
+        <h1>منصة تنسيق وتعديل المستندات الدراسية</h1>
+        <p>داعم كامل لتجهيز ملخصاتك وأسئلتك وحفظها كملفات PDF أنيقة</p>
     </header>
 
-    <!-- أزرار التحكم بالاقسام -->
     <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('summary-sec', this)">القسم الأول: تلخيص المواد</button>
-        <button class="tab-btn" onclick="switchTab('quiz-sec', this)">القسم الثاني: بناء الأسئلة</button>
+        <button class="tab-btn active" onclick="switchTab('summary-sec', this)">القسم الأول: تلخيص المادة</button>
+        <button class="tab-btn" onclick="switchTab('quiz-sec', this)">القسم الثاني: صياغة الأسئلة (5 أنماط)</button>
     </div>
 
-    <!-- القسم الأول: التلخيص -->
     <div id="summary-sec" class="section-content active">
-        <h2>تلخيص المواد الدراسية</h2>
+        <h2>دعم وتنسيق ملخصات المواد</h2>
+        
         <div class="form-group">
-            <label>اختر لغة الملف المرفوع:</label>
+            <label>1. لغة المستند المراد استخراجه:</label>
             <select id="lang-summary">
-                <option value="ar">العربية</option>
-                <option value="en">الإنجليزية</option>
+                <option value="ar">اللغة العربية</option>
+                <option value="en">اللغة الإنجليزية (English)</option>
             </select>
         </div>
+
         <div class="form-group">
-            <label>ارفع المادة الدراسية (PDF أو صور):</label>
-            <div class="upload-zone" onclick="document.getElementById('file-summary').click()">
-                <p>اضغط هنا لرفع الملفات أو الصور</p>
-                <input type="file" id="file-summary" accept="image/*, .pdf" style="display:none" onchange="updateFileName(this)">
-                <span id="file-name-sum" style="display:block; margin-top:10px; color:var(--primary-color); font-weight:600;"></span>
+            <label>2. إرفاق ملف المادة الأصلية (للدعم والأرشفة مرجعياً):</label>
+            <div class="input-file-wrapper">
+                <input type="file" id="file-summary" accept="image/*, .pdf">
             </div>
         </div>
-        <button class="btn-submit" onclick="generateSummary()">توليد التلخيص الذكي</button>
+
+        <div class="form-group">
+            <label>3. عنوان الملخص أو المادة الدراسية:</label>
+            <input type="text" id="summary-title" placeholder="مثال: ملخص مادة الكيمياء - الفصل الأول">
+        </div>
+
+        <div class="form-group">
+            <label>4. اكتب أو الصق التلخيص هنا (سيتم ضبطه وتنسيقه بخط Google):</label>
+            <textarea id="summary-text" rows="8" placeholder="اكتب النقاط الرئيسية، التعاريف، أو الشروحات التي تود تنسيقها..."></textarea>
+        </div>
+
+        <button class="btn-submit" onclick="buildSummaryPDF()">عرض وتجهيز ملف الـ PDF المعدّل</button>
     </div>
 
-    <!-- القسم الثاني: الأسئلة -->
     <div id="quiz-sec" class="section-content">
-        <h2>إنشاء أسئلة مخصصة (5 أنماط)</h2>
+        <h2>دعم وتنسيق الأسئلة والاختبارات</h2>
+        
         <div class="form-group">
-            <label>اختر لغة الأسئلة:</label>
+            <label>لغة الاختبار:</label>
             <select id="lang-quiz">
-                <option value="ar">العربية</option>
-                <option value="en">الإنجليزية</option>
+                <option value="ar">اللغة العربية</option>
+                <option value="en">اللغة الإنجليزية (English)</option>
             </select>
         </div>
+
         <div class="form-group">
-            <label>ارفع الملف أو الصور المراد الصياغة منها:</label>
-            <div class="upload-zone" onclick="document.getElementById('file-quiz').click()">
-                <p>اضغط هنا لرفع الملفات أو الصور</p>
-                <input type="file" id="file-quiz" accept="image/*, .pdf" style="display:none" onchange="updateFileName(this)">
-                <span id="file-name-quiz" style="display:block; margin-top:10px; color:var(--primary-color); font-weight:600;"></span>
+            <label>إرفاق مستند الأسئلة الخام (صور أو PDF):</label>
+            <div class="input-file-wrapper">
+                <input type="file" id="file-quiz" accept="image/*, .pdf">
             </div>
         </div>
-        <button class="btn-submit" onclick="generateQuiz()">توليد الأسئلة بأنماطها الخمسة</button>
+
+        <div class="form-group">
+            <label>عنوان ورقة الاختبار:</label>
+            <input type="text" id="quiz-title" placeholder="مثال: الاختبار الشامل لمادة التاريخ">
+        </div>
+
+        <hr style="margin: 20px 0; border: 0; border-top: 1px solid var(--border-color);">
+        <p style="font-weight: bold; margin-bottom: 15px; color: var(--primary-color);">يرجى ملء الأنماط الخمسة للأسئلة أدناه:</p>
+
+        <div class="form-group">
+            <label>النمط الأول: اختيار من متعدد (MCQ)</label>
+            <textarea id="q-p1" rows="2" placeholder="اكتب الأسئلة مع الاختيارات هنا..."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>النمط الثاني: صح أو خطأ</label>
+            <textarea id="q-p2" rows="2" placeholder="اكتب العبارات وحدد علامة ( ) هنا..."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>النمط الثالث: أكمل الفراغات</label>
+            <textarea id="q-p3" rows="2" placeholder="اكتب الجمل التي تحتوي على فراغات ........ هنا..."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>النمط الرابع: الأسئلة المقالية القصيرة (شرح / تعاريف)</label>
+            <textarea id="q-p4" rows="2" placeholder="اكتب أسئلة اذكر، علل، عرّف، اشرح هنا..."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>النمط الخامس: التوصيل / المطابقة</label>
+            <textarea id="q-p5" rows="2" placeholder="اكتب عناصر القائمة أ والقائمة ب هنا..."></textarea>
+        </div>
+
+        <button class="btn-submit" onclick="buildQuizPDF()">عرض وتجهيز ورقة الأسئلة المعدّلة</button>
     </div>
 
-    <!-- منطقة عرض وتصدير الـ PDF المعدل -->
     <div class="output-container" id="output-container">
-        <div id="pdf-content">
-            <!-- سيتم ملء هذا الجزء برمجياً -->
-        </div>
+        <h3 style="margin-bottom: 15px; color: #10b981;">✓ تم تجهيز المعاينة بنجاح</h3>
+        
+        <div id="pdf-content"></div>
+        
         <button class="btn-download" onclick="downloadPDF()">
-            تحميل الملف كمستند PDF معدل ومقسّم
+            تحميل المستند المعدل كـ PDF (بخط Google وجاهز للطباعة)
         </button>
     </div>
 
-    <!-- التوقيع المطلوب -->
     <footer>
         تم إعداده بواسطة عبد الله علي /D
     </footer>
 </div>
 
 <script>
-    // التنقل بين الأقسام
+    // التبديل السلس بين الأقسام
     function switchTab(sectionId, btn) {
         document.querySelectorAll('.section-content').forEach(sec => sec.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         
         document.getElementById(sectionId).classList.add('active');
         btn.classList.add('active');
-        document.getElementById('output-container').style.display = 'none'; // إخفاء المعاينة القديمة
+        document.getElementById('output-container').style.display = 'none';
     }
 
-    // تحديث اسم الملف عند الرفع
-    function updateFileName(input) {
-        const spanId = input.id === 'file-summary' ? 'file-name-sum' : 'file-name-quiz';
-        if(input.files.length > 0) {
-            document.getElementById(spanId).innerText = "تم اختيار ملف: " + input.files[0].name;
-        }
-    }
-
-    // معالجة وتوليد التلخيص (قسم 1)
-    function generateSummary() {
-        const fileInput = document.getElementById('file-summary');
+    // بناء وتنسيق الملخص (القسم الأول)
+    function buildSummaryPDF() {
+        const title = document.getElementById('summary-title').value || 'ملخص دراسي منسق';
+        const text = document.getElementById('summary-text').value;
         const lang = document.getElementById('lang-summary').value;
 
-        if (fileInput.files.length === 0) {
-            alert("الرجاء رفع ملف أو صورة أولاً!");
+        if(!text.trim()){
+            alert("الرجاء كتابة أو لصق نص التلخيص أولاً!");
             return;
         }
 
-        const container = document.getElementById('output-container');
         const pdfContent = document.getElementById('pdf-content');
         
-        // نص المحاكاة حسب اللغة
-        const title = lang === 'ar' ? "ملخص المادة الدراسية الشامل" : "Comprehensive Study Summary";
-        const content = lang === 'ar' ? 
-            `<p><strong>المحور الأول:</strong> هذا النص يمثل خلاصة الأفكار الرئيسية المأخوذة من الملف الذي قمت برفعه، حيث تم استخراج المفاهيم الأساسية وتبسيطها لتسهيل الحفظ والمراجعة السريعة.</p>
-             <p><strong>المحور الثاني:</strong> تم التركيز على النقاط الأكثر أهمية والتعاريف المحورية مع تنسيقها بشكل مريح للعين باستخدام خط كوكول المعتمد للقرّاء.</p>` :
-            `<p><strong>Core Concept 1:</strong> This text represents the summary of main ideas extracted from your uploaded file, simplifying key concepts for quick revision.</p>
-             <p><strong>Core Concept 2:</strong> Major definitions and critical points have been highlighted and structured appropriately.</p>`;
+        // تحويل السطور الجديدة في النص إلى وسم <br> لكي يظهر التنسيق بشكل صحيح
+        const formattedText = text.replace(/\n/g, '<br>');
+
+        pdfContent.style.direction = lang === 'ar' ? 'rtl' : 'ltr';
+        pdfContent.style.textAlign = lang === 'ar' ? 'right' : 'left';
 
         pdfContent.innerHTML = `
             <div class="pdf-header">
-                <h2>${title}</h2>
-                <small>اللغة المعتمدة: ${lang === 'ar' ? 'العربية' : 'English'}</small>
+                <h2 style="border:none; padding:0; margin:0; color:#1e293b; font-size:1.8rem;">${title}</h2>
+                <p style="font-size:0.9rem; color:#64748b; margin-top:5px;">نوع المستند: ملخص مادة دراسية معدّل</p>
             </div>
-            <div style="margin-bottom: 30px;">
-                ${content}
+            <div style="font-size: 1.1rem; color: #334155; min-height: 200px; line-height: 1.8;">
+                ${formattedText}
             </div>
-            <div style="text-align: left; font-weight: bold; margin-top: 40px; border-top: 1px dashed #ccc; padding-top: 10px;">
+            <div style="text-align: left; font-weight: bold; margin-top: 50px; border-top: 1px dashed #cbd5e1; padding-top: 10px; font-size:0.95rem; color:#475569;">
                 تم إعداده بواسطة عبد الله علي /D
             </div>
         `;
-        
-        container.style.display = 'block';
-        window.scrollTo({ top: container.offsetTop, behavior: 'smooth' });
+
+        document.getElementById('output-container').style.display = 'block';
+        window.scrollTo({ top: document.getElementById('output-container').offsetTop, behavior: 'smooth' });
     }
 
-    // معالجة وتوليد الأسئلة بـ 5 أنماط (قسم 2)
-    function generateQuiz() {
-        const fileInput = document.getElementById('file-quiz');
+    // بناء وتنسيق الأسئلة بـ 5 أنماط (القسم الثاني)
+    function buildQuizPDF() {
+        const title = document.getElementById('quiz-title').value || 'ورقة أسئلة واختبار';
         const lang = document.getElementById('lang-quiz').value;
+        
+        const p1 = document.getElementById('q-p1').value;
+        const p2 = document.getElementById('q-p2').value;
+        const p3 = document.getElementById('q-p3').value;
+        const p4 = document.getElementById('q-p4').value;
+        const p5 = document.getElementById('q-p5').value;
 
-        if (fileInput.files.length === 0) {
-            alert("الرجاء رفع ملف أو صورة صياغة الأسئلة!");
+        if(!p1 && !p2 && !p3 && !p4 && !p5) {
+            alert("الرجاء تعبئة نمط واحد على الأقل من الأنماط الخمسة للأسئلة!");
             return;
         }
 
-        const container = document.getElementById('output-container');
         const pdfContent = document.getElementById('pdf-content');
+        pdfContent.style.direction = lang === 'ar' ? 'rtl' : 'ltr';
+        pdfContent.style.textAlign = lang === 'ar' ? 'right' : 'left';
 
-        // الـ 5 أنماط للأسئلة باللغتين
-        const patterns = lang === 'ar' ? [
-            { type: "النمط الأول: اختيار من متعدد (MCQ)", q: "س1: أي مما يلي يعتبر العنصر الأساسي للمادة المذكورة؟ <br> أ) خيار أول | ب) خيار ثاني | ج) خيار ثالث" },
-            { type: "النمط الثاني: صح أم خطأ", q: "س2: ( ) تعتبر العملية الموضحة في الملف عملية عكسية دائماً." },
-            { type: "النمط الثالث: أكمل الفراغات", q: "س3: يتكون النظام الأساسي للمادة من ........ والتي تساعد على التوازن." },
-            { type: "النمط الرابع: الأسئلة المقالية القصيرة", q: "س4: اشرح باختصار الأثر الرئيسي المترتب على المفهوم المذكور في الفصل الأول؟" },
-            { type: "النمط الخامس: التوصيل (المطابقة)", q: "س5: صل من القائمة (أ) ما يناسبها من القائمة (ب) بناءً على الجداول المرفقة." }
-        ] : [
-            { type: "Pattern 1: Multiple Choice Questions (MCQ)", q: "Q1: Which of the following is the primary element described? <br> A) Option 1 | B) Option 2 | C) Option 3" },
-            { type: "Pattern 2: True or False", q: "Q2: ( ) The mechanism described in the text is always reversible." },
-            { type: "Pattern 3: Fill in the Blanks", q: "Q3: The core architecture consists of ........ which helps maintain stability." },
-            { type: "Pattern 4: Short Essay Questions", q: "Q4: Briefly explain the main impact of the concept discussed in chapter one?" },
-            { type: "Pattern 5: Matching Questions", q: "Q5: Match items from Column A with their correct definitions in Column B." }
-        ];
-
-        let quizHtml = `
+        let quizHTML = `
             <div class="pdf-header">
-                <h2>نموذج الاختبار الشامل (5 أنماط)</h2>
-                <small>اللغة المعتمدة: ${lang === 'ar' ? 'العربية' : 'English'}</small>
+                <h2 style="border:none; padding:0; margin:0; color:#1e293b; font-size:1.8rem;">${title}</h2>
+                <p style="font-size:0.9rem; color:#64748b; margin-top:5px;">نموذج أسئلة منسق وتقييم شامل</p>
             </div>
         `;
 
-        patterns.forEach(item => {
-            quizHtml += `
-                <div class="pattern-block">
-                    <div class="pattern-title">${item.type}</div>
-                    <p>${item.q}</p>
-                </div>
-            `;
+        const labels = lang === 'ar' ? [
+            "النمط الأول: اختيار من متعدد (MCQ)",
+            "النمط الثاني: أسئلة الصح والخطأ",
+            "النمط الثالث: إكمال الفراغات",
+            "النمط الرابع: الأسئلة المقالية والشرح",
+            "النمط الخامس: التوصيل والمطابقة"
+        ] : [
+            "Pattern 1: Multiple Choice Questions (MCQ)",
+            "Pattern 2: True or False Questions",
+            "Pattern 3: Fill in the Blanks",
+            "Pattern 4: Short Essays & Explanations",
+            "Pattern 5: Matching & Connection"
+        ];
+
+        const patterns = [p1, p2, p3, p4, p5];
+
+        patterns.forEach((content, index) => {
+            if(content.trim()) {
+                quizHTML += `
+                    <div class="pattern-block">
+                        <div class="pattern-title">${labels[index]}</div>
+                        <p style="white-space: pre-line; color:#334155;">${content}</p>
+                    </div>
+                `;
+            }
         });
 
-        quizHtml += `
-            <div style="text-align: left; font-weight: bold; margin-top: 40px; border-top: 1px dashed #ccc; padding-top: 10px;">
+        quizHTML += `
+            <div style="text-align: left; font-weight: bold; margin-top: 50px; border-top: 1px dashed #cbd5e1; padding-top: 10px; font-size:0.95rem; color:#475569;">
                 تم إعداده بواسطة عبد الله علي /D
             </div>
         `;
 
-        pdfContent.innerHTML = quizHtml;
-        container.style.display = 'block';
-        window.scrollTo({ top: container.offsetTop, behavior: 'smooth' });
+        pdfContent.innerHTML = quizHTML;
+        document.getElementById('output-container').style.display = 'block';
+        window.scrollTo({ top: document.getElementById('output-container').offsetTop, behavior: 'smooth' });
     }
 
-    // دالة تحميل وتصدير الملف بصيغة PDF معدل
+    // تحميل المستند النهائي بصيغة PDF وتسميته باسمك تلقائياً
     function downloadPDF() {
         const element = document.getElementById('pdf-content');
-        
-        // إعدادات تصدير الـ PDF ليحافظ على الخطوط والتنسيق العربي
         const opt = {
-            margin:       10,
-            filename:     'المستند_المعدل_عبدالله_علي.pdf',
+            margin:       12,
+            filename:     'مستند_معدل_عبدالله_علي.pdf',
             image:        { type: 'jpeg', quality: 0.98 },
             html2canvas:  { scale: 2, useCORS: true },
             jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
 
-        // تشغيل التصدير والتحميل تلقائياً
         html2pdf().set(opt).from(element).save();
     }
 </script>
